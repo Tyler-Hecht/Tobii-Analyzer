@@ -44,7 +44,10 @@ t = lines[3].strip().lower()
 if not t:
     print("ERROR: No testing or training given in config file")
     exit(1)
-ms = lines[5].strip()
+try:
+    ms = lines[5].strip()
+except:
+    ms = ""
 if not ms:
     print("ERROR: No delay given in config file")
     exit(1)
