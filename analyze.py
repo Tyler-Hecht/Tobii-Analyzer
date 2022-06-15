@@ -35,19 +35,17 @@ input_as_csv = input_file.split(".")[0] + ".csv"
 
 with open('config.txt') as f:
     lines = f.readlines()
-try:
-    order = lines[1].strip().upper()
-except:
-    print("ERROR: No order given in config file")
-    exit(1)
-try:
-    t = lines[3].strip().lower()
-except:
+order = lines[1].strip().upper()
+organize = True
+if not order:
+    print("No order given in config file; only exporting analyzed data")
+    organize = False
+t = lines[3].strip().lower()
+if not t:
     print("ERROR: No testing or training given in config file")
     exit(1)
-try:
-    ms = lines[5].strip()
-except:
+ms = lines[5].strip()
+if not ms:
     print("ERROR: No delay given in config file")
     exit(1)
     
@@ -66,10 +64,9 @@ m_orders_data = pd.read_excel("orders.xlsx", header = 1, usecols = [1, 3, 5, 7],
 b_orders_data = pd.read_excel("orders.xlsx", header = 26, usecols = [1, 3, 5, 7], sheet_name = 2, nrows = 21)
 orders_data = m_orders_data.join(b_orders_data)
 
-try:
+if organize:
     order_data = orders_data[order]
-except:
-    print("No order given in config file; only exporting analyzed data")
+else:
     os.chdir(input_path)
     input_as_csv2 = input_as_csv.split(".")[0] + "_analyzed.csv"
     shutil.move(input_as_csv, output_path + input_as_csv2)
