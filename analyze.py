@@ -1,5 +1,6 @@
 import glob
 import os
+import glob
 import pandas as pd
 import openpyxl as op
 from openpyxl.styles import Color, PatternFill, Font, Border, Side, Alignment
@@ -52,9 +53,10 @@ except:
     
 # run the Java file
 os.chdir(input_path)
-subprocess.run("javac Tobii.java")
-subprocess.run("java Tobii " + t + " " + input_file + " " + input_as_csv + " " + ms)
-    
+subprocess.Popen(["javac", "Tobii.java"])
+p = subprocess.Popen(["java", "Tobii", t, input_file, input_as_csv, ms])
+p.communicate()
+
 input_files = glob.glob(os.path.join(input_path, "*.csv"))
 input_file = input_files[0]
 
