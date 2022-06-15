@@ -53,10 +53,10 @@ except:
     
 # run the Java file
 os.chdir(input_path)
-subprocess.Popen(["javac", "Tobii.java"])
+p = subprocess.Popen(["javac", "Tobii.java"])
+p.communicate()
 p = subprocess.Popen(["java", "Tobii", t, input_file, input_as_csv, ms])
 p.communicate()
-
 input_files = glob.glob(os.path.join(input_path, "*.csv"))
 input_file = input_files[0]
 
@@ -69,8 +69,11 @@ orders_data = m_orders_data.join(b_orders_data)
 try:
     order_data = orders_data[order]
 except:
-    print("ERROR: Invalid order " + order + " given in config file")
-    exit(1)
+    print("No order given in config file; only exporting analyzed data")
+    os.chdir(input_path)
+    input_as_csv2 = input_as_csv.split(".")[0] + "_analyzed.csv"
+    shutil.move(input_as_csv, output_path + input_as_csv2)
+    exit()
 
 # create dictionary of information
 info = {}
